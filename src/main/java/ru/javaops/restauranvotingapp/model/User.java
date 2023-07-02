@@ -1,6 +1,8 @@
 package ru.javaops.restauranvotingapp.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
@@ -28,6 +30,17 @@ public class User extends BaseEntity implements Serializable {
     @Size(min = 2, max = 128)
     @Column(name = "name", nullable = false)
     private String name;
+
+    @Column(name = "email", nullable = false, unique = true)
+    @Email
+    @NotBlank
+    @Size(max = 128)
+    private String email;
+
+    @Column(name = "password", nullable = false)
+    @NotBlank
+    @Size(max = 256)
+    private String password;
 
     @Enumerated(EnumType.STRING)
     @CollectionTable(name = "user_role",

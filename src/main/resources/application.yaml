@@ -15,9 +15,12 @@ spring:
         jdbc.batch_size: 20
 datasource:
   #InMemory
-  url: jdbc:h2:mem:restauran-voting-app
-  #    tcp: jdbc:h2:tcp://localhost:9092/mem:restauran-voting-app
+  # url: jdbc:h2:mem:Restauran-voting-app
+  # tcp: jdbc:h2:tcp://localhost:9092/mem:Restauran-voting-app
+  # Absolute path
+  url: jdbc:h2:C:/Users/iamks/Desktop/JavaForTest/Restauran-voting-app
+  tcp: jdbc:h2:tcp://localhost:9092/C:/Users/iamks/Desktop/JavaForTest/Restauran-voting-app
   username: sa
   password:
-    h2.console.enabled: true
+h2.console.enabled: true
 
