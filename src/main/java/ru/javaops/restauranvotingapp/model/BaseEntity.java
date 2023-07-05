@@ -6,6 +6,9 @@ import lombok.*;
 import org.springframework.data.domain.Persistable;
 import org.springframework.data.util.ProxyUtils;
 import org.springframework.util.Assert;
+import ru.javaops.restauranvotingapp.HasId;
+
+import java.io.Serializable;
 
 @MappedSuperclass
 //  https://stackoverflow.com/a/6084701/548473
@@ -14,7 +17,7 @@ import org.springframework.util.Assert;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-public abstract class BaseEntity implements Persistable<Integer> {
+public abstract class BaseEntity implements Persistable<Integer>, HasId, Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

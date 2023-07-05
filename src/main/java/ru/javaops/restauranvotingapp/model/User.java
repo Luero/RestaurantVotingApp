@@ -1,6 +1,7 @@
 package ru.javaops.restauranvotingapp.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -14,15 +15,17 @@ import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.util.CollectionUtils;
 
 import java.io.Serial;
-import java.io.Serializable;
-import java.util.*;
+import java.util.Collection;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class User extends BaseEntity implements Serializable {
+public class User extends BaseEntity {
     @Serial
     private static final long serialVersionUID = 1L;
 
@@ -40,6 +43,8 @@ public class User extends BaseEntity implements Serializable {
     @Column(name = "password", nullable = false)
     @NotBlank
     @Size(max = 256)
+    // https://stackoverflow.com/a/12505165/548473
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     @Enumerated(EnumType.STRING)
@@ -52,15 +57,18 @@ public class User extends BaseEntity implements Serializable {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Set<Role> roles;
 
+    //TODO find a way to achieve result without JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     @OrderBy("votingDateTime DESC")
     @OnDelete(action = OnDeleteAction.CASCADE)
- //   @Schema(hidden = true)
+    @Schema(hidden = true)
     private List<Vote> votes;
 
-    public User(Integer id, String name, Collection<Role> roles) {
+    public User(Integer id, String name, String email, String password, Collection<Role> roles) {
         super(id);
         this.name = name;
+        this.email = email;
+        this.password = password;
         setRoles(roles);
     }
 
