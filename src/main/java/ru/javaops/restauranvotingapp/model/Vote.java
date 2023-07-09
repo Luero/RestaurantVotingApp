@@ -24,7 +24,7 @@ public class Vote extends BaseEntity {
 
     @Column(name = "voting_date", nullable = false, columnDefinition = "timestamp default now()")
     @NotNull
-    private LocalDateTime votingDateTime;
+    private LocalDateTime votingDateTime = LocalDateTime.now();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id")
