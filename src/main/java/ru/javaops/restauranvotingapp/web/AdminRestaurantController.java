@@ -7,8 +7,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import ru.javaops.restauranvotingapp.model.User;
-import ru.javaops.restauranvotingapp.repository.UserRepository;
+import ru.javaops.restauranvotingapp.model.Restaurant;
+import ru.javaops.restauranvotingapp.repository.RestaurantRepository;
 
 import java.util.List;
 
@@ -17,24 +17,24 @@ import static ru.javaops.restauranvotingapp.util.ValidationUtil.assureIdConsiste
 import static ru.javaops.restauranvotingapp.util.ValidationUtil.checkNew;
 
 @RestController
-@RequestMapping(value = AdminUserController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
-public class AdminUserController {
+@RequestMapping(value = AdminRestaurantController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
+public class AdminRestaurantController {
 
-    static final String REST_URL = "/api/admin/users";
+    static final String REST_URL = "/api/admin/restaurants";
 
     private final Logger log = getLogger(getClass());
 
     @Autowired
-    private UserRepository repository;
+    private RestaurantRepository repository;
 
     @GetMapping
-    public List<User> getAll() {
+    public List<Restaurant> getAll() {
         log.info("getAll");
-        return repository.findAll(Sort.by(Sort.Direction.ASC, "name", "email"));
+        return repository.findAll(Sort.by(Sort.Direction.ASC, "name"));
     }
 
     @GetMapping("/{id}")
-    public User get(@PathVariable int id) {
+    public Restaurant get(@PathVariable int id) {
         log.info("get {}", id);
         return repository.getExisted(id);
     }
@@ -47,18 +47,18 @@ public class AdminUserController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public User create(@Valid @RequestBody User user) {
-        log.info("create {}", user);
-        checkNew(user);
-        User created = repository.prepareAndSave(user);
+    public Restaurant create(@Valid @RequestBody Restaurant restaurant) {
+        log.info("create {}", restaurant);
+        checkNew(restaurant);
+        Restaurant created = repository.save(restaurant);
         return created;
     }
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@Valid @RequestBody User user, @PathVariable int id) {
-        log.info("update {} with id={}", user, id);
-        assureIdConsistent(user, id);
-        repository.prepareAndSave(user);
+    public void update(@Valid @RequestBody Restaurant restaurant, @PathVariable int id) {
+        log.info("update {} with id={}", restaurant, id);
+        assureIdConsistent(restaurant, id);
+        repository.save(restaurant);
     }
 }

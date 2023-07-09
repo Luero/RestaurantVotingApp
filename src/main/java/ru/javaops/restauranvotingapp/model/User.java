@@ -57,7 +57,6 @@ public class User extends BaseEntity {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Set<Role> roles;
 
-    //TODO find a way to achieve result without JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     @OrderBy("votingDateTime DESC")
     @OnDelete(action = OnDeleteAction.CASCADE)

@@ -1,5 +1,6 @@
 package ru.javaops.restauranvotingapp.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -32,10 +33,11 @@ public class Dish extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id")
+    @JsonIgnore
     private Restaurant restaurant;
 
-    @Column(name = "menu_date", nullable = false, columnDefinition = "timestamp default now()")
+    @Column(name = "menu_date", nullable = false, columnDefinition = "timestamp default now()", updatable = false)
     @NotNull
-    private LocalDate date;
+    private LocalDate date = LocalDate.now();
 
 }
