@@ -15,10 +15,7 @@ import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.util.CollectionUtils;
 
 import java.io.Serial;
-import java.util.Collection;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "users")
@@ -63,12 +60,12 @@ public class User extends BaseEntity {
     @Schema(hidden = true)
     private List<Vote> votes;
 
-    public User(Integer id, String name, String email, String password, Collection<Role> roles) {
+    public User(Integer id, String name, String email, String password, Role... roles) {
         super(id);
         this.name = name;
         this.email = email;
         this.password = password;
-        setRoles(roles);
+        Arrays.asList(roles);
     }
 
     public User(String name, Collection<Role> roles) {

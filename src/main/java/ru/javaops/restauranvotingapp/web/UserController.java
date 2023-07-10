@@ -9,11 +9,9 @@ import ru.javaops.restauranvotingapp.model.Restaurant;
 import ru.javaops.restauranvotingapp.model.User;
 import ru.javaops.restauranvotingapp.model.Vote;
 import ru.javaops.restauranvotingapp.repository.RestaurantRepository;
-import ru.javaops.restauranvotingapp.repository.UserRepository;
 import ru.javaops.restauranvotingapp.repository.VoteRepository;
 import ru.javaops.restauranvotingapp.service.VoteService;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.slf4j.LoggerFactory.getLogger;
