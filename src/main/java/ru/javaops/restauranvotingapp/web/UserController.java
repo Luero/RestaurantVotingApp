@@ -48,10 +48,10 @@ public class UserController {
     }
 
     @PostMapping
-    public Vote makeVote(@Valid @RequestBody User user, @Valid @RequestBody Vote vote) {
+    public Vote makeVote(@Valid @RequestBody User user, @RequestParam int restaurantId) {
         int userId = user.id();
         log.info("voting for user {}", userId);
-        Vote newVote = service.save(userId, vote);
+        Vote newVote = service.save(userId, restaurantId);
         return newVote;
     }
 }

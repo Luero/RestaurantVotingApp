@@ -25,11 +25,11 @@ spring:
   h2.console.enabled: true
 
 # Security
-  security:
-    user:
-      name: admin
-      password: password
-      roles: ADMIN
+#  security:
+#   user:
+#     name: admin
+#     password: password
+#     roles: ADMIN
 
 # Jackson Serialization Issue Resolver
   jackson.visibility:
@@ -40,6 +40,8 @@ spring:
   jackson:
     serialization:
       FAIL_ON_EMPTY_BEANS: false
+    # https://stackoverflow.com/questions/11757487/how-to-tell-jackson-to-ignore-a-field-during-serialization-if-its-value-is-null
+    default-property-inclusion: non_empty
 
 logging:
   level:

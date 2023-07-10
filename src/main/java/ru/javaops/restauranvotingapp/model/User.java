@@ -17,6 +17,8 @@ import org.springframework.util.CollectionUtils;
 import java.io.Serial;
 import java.util.*;
 
+//TODO check whether Serializable interface is needed only for User
+
 @Entity
 @Table(name = "users")
 @Getter
@@ -75,6 +77,10 @@ public class User extends BaseEntity {
 
     public void setRoles(Collection<Role> roles) {
         this.roles = CollectionUtils.isEmpty(roles) ? EnumSet.noneOf(Role.class) : EnumSet.copyOf(roles);
+    }
+
+    public boolean hasRole(Role role) {
+        return roles != null && roles.contains(role);
     }
 
     @Override

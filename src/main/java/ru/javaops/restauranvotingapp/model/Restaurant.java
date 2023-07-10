@@ -1,5 +1,6 @@
 package ru.javaops.restauranvotingapp.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -9,6 +10,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -25,16 +27,16 @@ public class Restaurant extends BaseEntity {
 
     @Column(name = "registered", nullable = false, columnDefinition = "timestamp default now()", updatable = false)
     @NotNull
-    private LocalDate registered;
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private Date registered = new Date();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
     @OrderBy("date DESC")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Dish> menu;
 
-    public Restaurant(Integer id, String name, LocalDate registered) {
+    public Restaurant(Integer id, String name) {
         super(id);
         this.name = name;
-        this.registered = registered;
     }
 }

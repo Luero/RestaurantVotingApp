@@ -9,10 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import ru.javaops.restauranvotingapp.model.User;
 import ru.javaops.restauranvotingapp.repository.UserRepository;
-import ru.javaops.restauranvotingapp.to.UserTo;
-import ru.javaops.restauranvotingapp.util.ToUtil;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.slf4j.LoggerFactory.getLogger;
@@ -31,21 +28,15 @@ public class AdminUserController {
     private UserRepository repository;
 
     @GetMapping
-    public List<UserTo> getAll() {
+    public List<User> getAll() {
         log.info("getAll");
-        List<User> users = repository.findAll(Sort.by(Sort.Direction.ASC, "name", "email"));
-        List<UserTo> usersWithRelevantData = new ArrayList<>();
-        for(User u : users) {
-            UserTo userTo = ToUtil.transferUserToUserTo(u);
-            usersWithRelevantData.add(userTo);
-        }
-        return usersWithRelevantData;
+        return repository.findAll(Sort.by(Sort.Direction.ASC, "name", "email"));
     }
 
     @GetMapping("/{id}")
-    public UserTo get(@PathVariable int id) {
+    public User get(@PathVariable int id) {
         log.info("get {}", id);
-        return ToUtil.transferUserToUserTo(repository.getExisted(id));
+        return repository.getExisted(id);
     }
 
     @DeleteMapping("/{id}")

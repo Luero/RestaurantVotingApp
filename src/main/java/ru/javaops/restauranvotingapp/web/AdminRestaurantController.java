@@ -9,6 +9,8 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import ru.javaops.restauranvotingapp.model.Restaurant;
 import ru.javaops.restauranvotingapp.repository.RestaurantRepository;
+import ru.javaops.restauranvotingapp.to.RestaurantTo;
+import ru.javaops.restauranvotingapp.util.ToUtil;
 
 import java.util.List;
 
@@ -47,18 +49,19 @@ public class AdminRestaurantController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Restaurant create(@Valid @RequestBody Restaurant restaurant) {
-        log.info("create {}", restaurant);
-        checkNew(restaurant);
-        Restaurant created = repository.save(restaurant);
+    public Restaurant create(@Valid @RequestBody RestaurantTo restaurantTo) {
+        log.info("create {}", restaurantTo);
+        checkNew(restaurantTo);
+        Restaurant created = repository.save(ToUtil.createFromRestaurantTo(restaurantTo));
         return created;
     }
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@Valid @RequestBody Restaurant restaurant, @PathVariable int id) {
+    public void update(@Valid @RequestBody Restaurant restaurant, @PathVariable int id,
+                       @Valid @RequestBody RestaurantTo restaurantTo) {
         log.info("update {} with id={}", restaurant, id);
         assureIdConsistent(restaurant, id);
-        repository.save(restaurant);
+        repository.save(ToUtil.updateFromRestaurantTo(restaurant, restaurantTo));
     }
 }
