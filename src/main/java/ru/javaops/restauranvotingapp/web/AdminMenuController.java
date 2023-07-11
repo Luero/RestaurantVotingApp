@@ -7,10 +7,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import ru.javaops.restauranvotingapp.model.Restaurant;
+import ru.javaops.restauranvotingapp.model.Dish;
 import ru.javaops.restauranvotingapp.repository.RestaurantRepository;
+import ru.javaops.restauranvotingapp.service.*;
 
 import static org.slf4j.LoggerFactory.getLogger;
-import static ru.javaops.restauranvotingapp.util.ValidationUtil.assureIdConsistent;
+import static ru.javaops.restauranvotingapp.util.ValidationUtil.checkNew;
 
 @RestController
 @RequestMapping(value = AdminMenuController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -23,6 +25,9 @@ public class AdminMenuController {
     @Autowired
     private RestaurantRepository repository;
 
+    @Autowired
+    private MenuService service;
+
     @GetMapping("/{id}")
     public Restaurant getWithMenu(@PathVariable int id) {
         log.info("getWithMenu {}", id);
@@ -30,11 +35,12 @@ public class AdminMenuController {
                 -> new RuntimeException("Entity with id=" + id + " not found"));
     }
 
-    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@Valid @RequestBody Restaurant restaurant, @PathVariable int id) {
-        log.info("update menu {} with id={}", restaurant, id);
-        assureIdConsistent(restaurant, id);
-        repository.save(restaurant);
+    public Dish addToMenu(@PathVariable int id, @Valid @RequestBody Dish dish) {
+        log.info("update menu for restaurant with id={}", id);
+        checkNew(dish);
+        Dish created = service.save(id, dish);
+        return created;
     }
 }

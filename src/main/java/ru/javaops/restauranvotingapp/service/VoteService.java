@@ -11,7 +11,6 @@ import ru.javaops.restauranvotingapp.repository.VoteRepository;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -20,14 +19,14 @@ public class VoteService {
 
     private UserRepository userRepository;
 
-    private RestaurantRepository restaurantRepository;
+    private RestaurantRepository restaurantAndDishRepository;
 
     private VoteRepository repository;
 
     @Transactional
     public Vote save(int userId, int restaurantId) {
         Optional<Vote> todayVote = repository.getTodayVote(userId);
-        Restaurant restaurant = restaurantRepository.getExisted(restaurantId);
+        Restaurant restaurant = restaurantAndDishRepository.getExisted(restaurantId);
         if (todayVote.isEmpty()) {
             Vote vote = new Vote(null, userRepository.getExisted(userId), LocalDateTime.now(), restaurant);
             return repository.save(vote);

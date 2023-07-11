@@ -1,12 +1,12 @@
 package ru.javaops.restauranvotingapp.web;
 
-import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import ru.javaops.restauranvotingapp.AuthUser;
 import ru.javaops.restauranvotingapp.model.Restaurant;
-import ru.javaops.restauranvotingapp.model.User;
 import ru.javaops.restauranvotingapp.model.Vote;
 import ru.javaops.restauranvotingapp.repository.RestaurantRepository;
 import ru.javaops.restauranvotingapp.repository.VoteRepository;
@@ -33,23 +33,21 @@ public class UserController {
     @Autowired
     private VoteService service;
 
-    //TODO add authentification and check for auth User
     @GetMapping
     public List<Restaurant> getAllWithMenuForToday() {
         log.info("getAllWithMenu");
         return restaurantRepository.getAllWithMenuForToday();
     }
 
-    @GetMapping("/{userId}/votes")
-    public List<Vote> getVotesHistory(@PathVariable int userId) {
-    //    int userId = user.id();
-        log.info("getVotesHistory for user {}", userId);
-        return repository.getWithVotes(userId);
+    @GetMapping("/votes")
+    public List<Vote> getVotesHistory(@AuthenticationPrincipal AuthUser authUser) {
+        log.info("getVotesHistory for user {}", authUser.id());
+        return repository.getWithVotes(authUser.id());
     }
 
     @PostMapping
-    public Vote makeVote(@Valid @RequestBody User user, @RequestParam int restaurantId) {
-        int userId = user.id();
+    public Vote makeVote(@AuthenticationPrincipal AuthUser authUser, @RequestParam int restaurantId) {
+        int userId = authUser.id();
         log.info("voting for user {}", userId);
         Vote newVote = service.save(userId, restaurantId);
         return newVote;
