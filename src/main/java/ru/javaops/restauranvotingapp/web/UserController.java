@@ -40,6 +40,7 @@ public class UserController {
     }
 
     @GetMapping("/votes")
+    //  @Cacheable(cacheNames = "votes", key = "#authUser.id()")
     public List<Vote> getVotesHistory(@AuthenticationPrincipal AuthUser authUser) {
         log.info("getVotesHistory for user {}", authUser.id());
         return repository.getWithVotes(authUser.id());

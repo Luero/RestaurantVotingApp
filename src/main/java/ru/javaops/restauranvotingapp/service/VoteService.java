@@ -32,7 +32,7 @@ public class VoteService {
             return repository.save(vote);
         } else {
             Vote existedVote = todayVote.get();
-            if(existedVote.getTime().isBefore(LocalTime.of(11, 0))) {
+            if (existedVote.getTime().isBefore(LocalTime.of(11, 0))) {
                 existedVote.setRestaurant(restaurant);
                 return repository.save(existedVote);
             } else {

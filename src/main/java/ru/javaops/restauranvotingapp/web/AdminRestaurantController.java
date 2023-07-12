@@ -3,19 +3,20 @@ package ru.javaops.restauranvotingapp.web;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import ru.javaops.restauranvotingapp.model.Restaurant;
 import ru.javaops.restauranvotingapp.repository.RestaurantRepository;
+import ru.javaops.restauranvotingapp.service.RestaurantService;
 import ru.javaops.restauranvotingapp.to.RestaurantTo;
 import ru.javaops.restauranvotingapp.util.ToUtil;
 
 import java.util.List;
 
 import static org.slf4j.LoggerFactory.getLogger;
-import static ru.javaops.restauranvotingapp.util.ValidationUtil.assureIdConsistent;
 import static ru.javaops.restauranvotingapp.util.ValidationUtil.checkNew;
 
 @RestController
@@ -29,7 +30,11 @@ public class AdminRestaurantController {
     @Autowired
     private RestaurantRepository repository;
 
+    @Autowired
+    private RestaurantService service;
+
     @GetMapping
+    //  @Cacheable("restaurants")
     public List<Restaurant> getAll() {
         log.info("getAll");
         return repository.findAll(Sort.by(Sort.Direction.ASC, "name"));
@@ -58,10 +63,8 @@ public class AdminRestaurantController {
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@Valid @RequestBody Restaurant restaurant, @PathVariable int id,
-                       @Valid @RequestBody RestaurantTo restaurantTo) {
-        log.info("update {} with id={}", restaurant, id);
-        assureIdConsistent(restaurant, id);
-        repository.save(ToUtil.updateFromRestaurantTo(restaurant, restaurantTo));
+    public void update(@PathVariable int id, @Valid @RequestBody RestaurantTo restaurantTo) {
+        log.info("update restaurant with id={}", id);
+        service.update(id, restaurantTo);
     }
 }

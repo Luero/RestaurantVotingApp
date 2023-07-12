@@ -24,13 +24,6 @@ spring:
     password:
   h2.console.enabled: true
 
-# Security
-#  security:
-#   user:
-#     name: admin
-#     password: password
-#     roles: ADMIN
-
 # Jackson Serialization Issue Resolver
   jackson.visibility:
     field: any
@@ -43,11 +36,18 @@ spring:
     # https://stackoverflow.com/questions/11757487/how-to-tell-jackson-to-ignore-a-field-during-serialization-if-its-value-is-null
     default-property-inclusion: non_empty
 
+  # https://docs.spring.io/spring-boot/docs/current/reference/html/appendix-application-properties.html#common-application-properties-cache
+  cache:
+    cache-names: users, restaurants, votes
+    caffeine.spec: maximumSize=5000,expireAfterAccess=600s
+
 logging:
   level:
     root: WARN
     ru.javaops.restauranvotingapp: DEBUG
     org.springframework.security.web.FilterChainProxy: DEBUG
+
+springdoc.swagger-ui.path: /
 
 
 
