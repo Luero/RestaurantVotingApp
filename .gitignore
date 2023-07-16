@@ -10,8 +10,3 @@ target/
 *.iml
 *.ipr
 
-### Maven
-.mvn
-mvnw
-mvnw.cmd
-
