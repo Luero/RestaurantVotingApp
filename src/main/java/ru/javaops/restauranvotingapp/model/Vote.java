@@ -5,8 +5,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
@@ -28,6 +29,7 @@ public class Vote extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id")
+    @OnDelete(action = OnDeleteAction.SET_NULL)
     private Restaurant restaurant;
 
     public Vote(Integer id, User user, LocalDateTime votingDateTime, Restaurant restaurant) {
@@ -35,11 +37,6 @@ public class Vote extends BaseEntity {
         this.user = user;
         this.votingDateTime = votingDateTime;
         this.restaurant = restaurant;
-    }
-
-    @Schema(hidden = true)
-    public LocalDate getDate() {
-        return votingDateTime.toLocalDate();
     }
 
     @Schema(hidden = true)

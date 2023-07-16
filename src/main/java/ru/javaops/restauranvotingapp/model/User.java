@@ -17,8 +17,6 @@ import org.springframework.util.CollectionUtils;
 import java.io.Serial;
 import java.util.*;
 
-//TODO check whether Serializable interface is needed only for User
-
 @Entity
 @Table(name = "users")
 @Getter

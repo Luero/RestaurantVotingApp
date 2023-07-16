@@ -38,6 +38,10 @@ public class Dish extends BaseEntity {
 
     @Column(name = "menu_date", nullable = false, columnDefinition = "timestamp default now()", updatable = false)
     @NotNull
-    private LocalDate date = LocalDate.now();
+    private LocalDate menuDate = LocalDate.now();
 
+    public Dish(String name, double price) {
+        this.name = name;
+        this.price = price;
+    }
 }

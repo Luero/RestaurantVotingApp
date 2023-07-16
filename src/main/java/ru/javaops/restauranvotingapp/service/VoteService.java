@@ -3,6 +3,7 @@ package ru.javaops.restauranvotingapp.service;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.javaops.restauranvotingapp.error.IllegalRequestDataException;
 import ru.javaops.restauranvotingapp.model.Restaurant;
 import ru.javaops.restauranvotingapp.repository.RestaurantRepository;
 import ru.javaops.restauranvotingapp.repository.UserRepository;
@@ -36,7 +37,7 @@ public class VoteService {
                 existedVote.setRestaurant(restaurant);
                 return repository.save(existedVote);
             } else {
-                throw new RuntimeException("You cannot update your vote for today");
+                throw new IllegalRequestDataException("You cannot update your vote for today");
             }
         }
     }

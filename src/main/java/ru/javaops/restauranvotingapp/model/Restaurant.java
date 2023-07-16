@@ -30,7 +30,7 @@ public class Restaurant extends BaseEntity {
     private Date registered = new Date();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
-    @OrderBy("date DESC")
+    @OrderBy("menuDate DESC")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Dish> menu;
 
