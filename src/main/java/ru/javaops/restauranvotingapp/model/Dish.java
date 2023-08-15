@@ -9,7 +9,6 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.validator.constraints.Range;
 
 import java.time.LocalDate;
 
@@ -28,7 +27,6 @@ public class Dish extends BaseEntity {
     private String name;
 
     @Column(name = "price", nullable = false)
-    @Range(min = 1, max = 100000)
     private double price;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -36,7 +34,7 @@ public class Dish extends BaseEntity {
     @JsonIgnore
     private Restaurant restaurant;
 
-    @Column(name = "menu_date", nullable = false, columnDefinition = "timestamp default now()", updatable = false)
+    @Column(name = "menu_date", nullable = false, updatable = false)
     @NotNull
     private LocalDate menuDate = LocalDate.now();
 

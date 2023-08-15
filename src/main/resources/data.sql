@@ -33,13 +33,12 @@ VALUES ('Tomato soup', 20.0, 2, '2023-06-20'),
        ('Fish soup', 20.0, 3, '2023-06-21'),
        ('Beef with potatoes', 26.0, 3, '2023-06-21');
 
-INSERT INTO VOTE (USER_ID, voting_date, RESTAURANT_ID)
-VALUES (1, '2023-06-20 10:00', 2),
-       (1, '2023-06-21 15:00', 3),
-       (3, '2023-06-20 11:50', 1),
-       (3, '2023-06-21 12:00', 1),
-       (1, now(), 2),
-       (3, now(), 2);
+INSERT INTO VOTE (USER_ID, voting_date, voting_time, RESTAURANT_ID)
+VALUES (1, '2023-06-20', '10:00', 2),
+       (1, '2023-06-21', '15:00', 3),
+       (3, '2023-06-20', '11:50', 1),
+       (3, '2023-06-21', '12:00', 1),
+       (1, now(), now(), 2);
 
 
 

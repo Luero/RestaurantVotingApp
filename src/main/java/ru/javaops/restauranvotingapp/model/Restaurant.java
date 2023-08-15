@@ -13,7 +13,9 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name = "restaurant")
+@Table(name = "restaurant",
+        uniqueConstraints = @UniqueConstraint(columnNames = {"name", "registered"},
+                name = "restaurant_unique_name_registration_date_idx"))
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

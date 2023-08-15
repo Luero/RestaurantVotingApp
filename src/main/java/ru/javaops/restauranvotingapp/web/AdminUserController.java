@@ -1,10 +1,10 @@
 package ru.javaops.restauranvotingapp.web;
 
 import jakarta.validation.Valid;
-import org.slf4j.Logger;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -14,23 +14,21 @@ import ru.javaops.restauranvotingapp.repository.UserRepository;
 
 import java.util.List;
 
-import static org.slf4j.LoggerFactory.getLogger;
 import static ru.javaops.restauranvotingapp.util.ValidationUtil.assureIdConsistent;
 import static ru.javaops.restauranvotingapp.util.ValidationUtil.checkNew;
 
 @RestController
 @RequestMapping(value = AdminUserController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
+@Slf4j
+@RequiredArgsConstructor
 public class AdminUserController {
 
     static final String REST_URL = "/api/admin/users";
 
-    private final Logger log = getLogger(getClass());
-
     @Autowired
-    private UserRepository repository;
+    private final UserRepository repository;
 
     @GetMapping
-    @Cacheable("users")
     public List<User> getAll() {
         log.info("getAll");
         return repository.findAll(Sort.by(Sort.Direction.ASC, "name", "email"));
@@ -44,14 +42,13 @@ public class AdminUserController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @CacheEvict(value = "users", allEntries = true)
+    @CacheEvict(value = "users", key = "#id")
     public void delete(@PathVariable int id) {
         log.info("delete {}", id);
         repository.deleteExisted(id);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    @CacheEvict(value = "users", allEntries = true)
     public User create(@Valid @RequestBody User user) {
         log.info("create {}", user);
         checkNew(user);
@@ -61,7 +58,6 @@ public class AdminUserController {
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @CacheEvict(value = "users", allEntries = true)
     public void update(@Valid @RequestBody User user, @PathVariable int id) {
         log.info("update {} with id={}", user, id);
         assureIdConsistent(user, id);

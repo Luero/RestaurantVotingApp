@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 import ru.javaops.restauranvotingapp.model.Vote;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,8 +12,8 @@ import java.util.Optional;
 public interface VoteRepository extends BaseRepository<Vote> {
 
     @Query("SELECT v FROM Vote v LEFT JOIN FETCH v.restaurant WHERE v.user.id=?1")
-    List<Vote> getWithVotes(int userId);
+    List<Vote> getWithRestaurant(int userId);
 
-    @Query("SELECT v FROM Vote v WHERE TIMESTAMPDIFF(DAY, v.votingDateTime, NOW()) = 0 AND v.user.id=?1")
-    Optional<Vote> getTodayVote(int userId);
+    @Query("SELECT v FROM Vote v WHERE v.votingDate=?1 AND v.user.id=?2")
+    Optional<Vote> getVoteByDate(LocalDate date, int userId);
 }

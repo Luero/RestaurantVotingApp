@@ -1,32 +1,33 @@
 package ru.javaops.restauranvotingapp.web;
 
 import jakarta.validation.Valid;
-import org.slf4j.Logger;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import ru.javaops.restauranvotingapp.error.NotFoundException;
-import ru.javaops.restauranvotingapp.model.Restaurant;
 import ru.javaops.restauranvotingapp.model.Dish;
+import ru.javaops.restauranvotingapp.model.Restaurant;
 import ru.javaops.restauranvotingapp.repository.RestaurantRepository;
-import ru.javaops.restauranvotingapp.service.*;
+import ru.javaops.restauranvotingapp.service.MenuService;
 
-import static org.slf4j.LoggerFactory.getLogger;
 import static ru.javaops.restauranvotingapp.util.ValidationUtil.checkNew;
 
 @RestController
 @RequestMapping(value = AdminMenuController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
+@Slf4j
+@RequiredArgsConstructor
 public class AdminMenuController {
 
     static final String REST_URL = "/api/admin/restaurants";
 
-    private final Logger log = getLogger(getClass());
+    @Autowired
+    private final RestaurantRepository repository;
 
     @Autowired
-    private RestaurantRepository repository;
-
-    @Autowired
-    private MenuService service;
+    private final MenuService service;
 
     @GetMapping("/{id}/menu")
     public Restaurant getWithMenu(@PathVariable int id) {
@@ -36,6 +37,7 @@ public class AdminMenuController {
     }
 
     @PostMapping(value = "/{id}/menu", consumes = MediaType.APPLICATION_JSON_VALUE)
+    //@CachePut("dishes")
     public Dish addToMenu(@PathVariable int id, @Valid @RequestBody Dish dish) {
         log.info("update menu for restaurant with id={}", id);
         checkNew(dish);

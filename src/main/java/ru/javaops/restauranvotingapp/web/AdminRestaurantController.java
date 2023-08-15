@@ -1,10 +1,11 @@
 package ru.javaops.restauranvotingapp.web;
 
 import jakarta.validation.Valid;
-import org.slf4j.Logger;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -17,25 +18,23 @@ import ru.javaops.restauranvotingapp.util.ToUtil;
 
 import java.util.List;
 
-import static org.slf4j.LoggerFactory.getLogger;
 import static ru.javaops.restauranvotingapp.util.ValidationUtil.checkNew;
 
 @RestController
 @RequestMapping(value = AdminRestaurantController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
+@Slf4j
+@RequiredArgsConstructor
 public class AdminRestaurantController {
 
     static final String REST_URL = "/api/admin/restaurants";
 
-    private final Logger log = getLogger(getClass());
+    @Autowired
+    private final RestaurantRepository repository;
 
     @Autowired
-    private RestaurantRepository repository;
-
-    @Autowired
-    private RestaurantService service;
+    private final RestaurantService service;
 
     @GetMapping
-    @Cacheable("restaurants")
     public List<Restaurant> getAll() {
         log.info("getAll");
         return repository.findAll(Sort.by(Sort.Direction.ASC, "name"));
@@ -49,14 +48,14 @@ public class AdminRestaurantController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @CacheEvict(value = "restaurants", allEntries = true)
+    //@CacheEvict(value = "restaurants", key = "#id")
     public void delete(@PathVariable int id) {
         log.info("delete {}", id);
         repository.deleteExisted(id);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    @CacheEvict(value = "restaurants", allEntries = true)
+    //@CachePut(value = "restaurants")
     public Restaurant create(@Valid @RequestBody RestaurantTo restaurantTo) {
         log.info("create {}", restaurantTo);
         checkNew(restaurantTo);
@@ -66,7 +65,6 @@ public class AdminRestaurantController {
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @CacheEvict(value = "restaurants", allEntries = true)
     public void update(@PathVariable int id, @Valid @RequestBody RestaurantTo restaurantTo) {
         log.info("update restaurant with id={}", id);
         service.update(id, restaurantTo);
