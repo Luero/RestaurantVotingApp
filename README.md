@@ -25,5 +25,5 @@ Maven, Spring Boot, Spring MVC, Spring Security, Spring Data JPA, Hibernate, RES
 Link to Swagger UI: http://localhost:8080/swagger-ui/index.html
 
 Credentials for test:
-- for UserController: user@yandex.ru / password or victor@yandex.ru / victor
-- for AdminControllers: admin@yandex.ru / admin
+- for User: user@yandex.ru / password or victor@yandex.ru / victor
+- for Admin: admin@yandex.ru / admin
