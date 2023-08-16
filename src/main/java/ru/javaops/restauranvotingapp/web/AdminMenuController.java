@@ -4,7 +4,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CachePut;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import ru.javaops.restauranvotingapp.error.NotFoundException;
@@ -37,7 +36,6 @@ public class AdminMenuController {
     }
 
     @PostMapping(value = "/{id}/menu", consumes = MediaType.APPLICATION_JSON_VALUE)
-    //@CachePut("dishes")
     public Dish addToMenu(@PathVariable int id, @Valid @RequestBody Dish dish) {
         log.info("update menu for restaurant with id={}", id);
         checkNew(dish);

@@ -17,7 +17,7 @@ public interface UserRepository extends BaseRepository<User> {
     Optional<User> getWithVotes(int id);
 
     @Transactional
-    @CachePut(value = "users", key = "#user.id")
+    @CachePut(value = "users", key = "#user.email")
     default User prepareAndSave(User user) {
         user.setPassword(PASSWORD_ENCODER.encode(user.getPassword()));
         user.setEmail(user.getEmail().toLowerCase());

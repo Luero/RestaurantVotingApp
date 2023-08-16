@@ -3,8 +3,6 @@ package ru.javaops.restauranvotingapp.web;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.cache.annotation.Caching;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,12 +25,6 @@ public class UserRestaurantController {
     private final RestaurantRepository repository;
 
     @GetMapping
-//    @Caching(
-//            cacheable = {
-//                    @Cacheable("restaurants"),
-//                    @Cacheable("dishes")
-//            }
-//    )
     public List<Restaurant> getAllWithMenuForToday() {
         log.info("getAllWithMenu");
         return repository.getAllWithMenuByDate(LocalDate.now());

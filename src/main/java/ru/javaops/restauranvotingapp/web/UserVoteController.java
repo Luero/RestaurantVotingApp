@@ -3,8 +3,6 @@ package ru.javaops.restauranvotingapp.web;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -30,14 +28,12 @@ public class UserVoteController {
     private final VoteService service;
 
     @GetMapping
-    @Cacheable(cacheNames = "votes")
     public List<Vote> getVotesHistory(@AuthenticationPrincipal AuthUser authUser) {
         log.info("getVotesHistory for user {}", authUser.id());
         return repository.getWithRestaurant(authUser.id());
     }
 
     @PostMapping
-    @CacheEvict(value = "votes", allEntries = true)
     public Vote makeVote(@AuthenticationPrincipal AuthUser authUser, @RequestParam int restaurantId) {
         int userId = authUser.id();
         log.info("voting for user {}", userId);
