@@ -29,6 +29,6 @@ public class RestaurantAndDishTestData {
         return new Restaurant(BINGO_DISH_ID, "newName");
     }
     public static Dish getNew() {
-        return new Dish("noodles", 12.0);
+        return new Dish("noodles", 1200);
     }
 }

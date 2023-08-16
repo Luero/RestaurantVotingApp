@@ -8,13 +8,17 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import ru.javaops.restauranvotingapp.error.NotFoundException;
 import ru.javaops.restauranvotingapp.model.Restaurant;
 import ru.javaops.restauranvotingapp.repository.RestaurantRepository;
 import ru.javaops.restauranvotingapp.service.RestaurantService;
 import ru.javaops.restauranvotingapp.to.RestaurantTo;
 import ru.javaops.restauranvotingapp.util.ToUtil;
 
+import java.net.URI;
 import java.util.List;
 
 import static ru.javaops.restauranvotingapp.util.ValidationUtil.checkNew;
@@ -45,6 +49,16 @@ public class AdminRestaurantController {
         return repository.getExisted(id);
     }
 
+    @GetMapping("/{id}/with_dishes")
+    public Restaurant getWithDishes(@PathVariable int id) {
+        log.info("getWithMenu {}", id);
+        return repository.getWithDishes(id).orElseThrow(()
+                -> new NotFoundException("Entity with id=" + id + " not found"));
+    }
+
+
+    //TODO getWithMenuByDate
+
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @CacheEvict(value = "menu_for_date", allEntries = true)
@@ -55,11 +69,14 @@ public class AdminRestaurantController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @CacheEvict(value = "menu_for_date", allEntries = true)
-    public Restaurant create(@Valid @RequestBody RestaurantTo restaurantTo) {
+    public ResponseEntity<Restaurant> createWithLocation(@Valid @RequestBody RestaurantTo restaurantTo) {
         log.info("create {}", restaurantTo);
         checkNew(restaurantTo);
         Restaurant created = repository.save(ToUtil.createFromRestaurantTo(restaurantTo));
-        return created;
+        URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path(REST_URL + "/{id}")
+                .buildAndExpand(created.getId()).toUri();
+        return ResponseEntity.created(uriOfNewResource).body(created);
     }
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)

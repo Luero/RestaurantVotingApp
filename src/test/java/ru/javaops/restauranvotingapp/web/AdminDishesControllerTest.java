@@ -18,7 +18,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static ru.javaops.restauranvotingapp.web.RestaurantAndDishTestData.*;
 import static ru.javaops.restauranvotingapp.web.UserTestData.ADMIN_MAIL;
 
-public class AdminMenuControllerTest extends AbstractControllerTest {
+public class AdminDishesControllerTest extends AbstractControllerTest {
 
     static final String REST_URL = "/api/admin/restaurants";
     @Autowired

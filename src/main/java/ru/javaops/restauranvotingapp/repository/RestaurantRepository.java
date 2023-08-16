@@ -13,7 +13,7 @@ import java.util.Optional;
 public interface RestaurantRepository extends BaseRepository<Restaurant> {
 
     @Query("SELECT r FROM Restaurant r LEFT JOIN FETCH r.menu WHERE r.id=?1")
-    Optional<Restaurant> getWithMenu(int id);
+    Optional<Restaurant> getWithDishes(int id);
 
     @Query("SELECT r FROM Restaurant r LEFT JOIN FETCH r.menu d WHERE d.menuDate=?1")
     @Cacheable(value = "menu_for_date")
