@@ -3,6 +3,7 @@ package ru.javaops.restauranvotingapp.web;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -14,6 +15,7 @@ import ru.javaops.restauranvotingapp.repository.VoteRepository;
 import ru.javaops.restauranvotingapp.service.VoteService;
 
 import java.net.URI;
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -36,14 +38,28 @@ public class UserVoteController {
         return repository.getWithRestaurant(authUser.id());
     }
 
+    @GetMapping("/for-today")
+    public ResponseEntity<Vote> getForToday(@AuthenticationPrincipal AuthUser authUser) {
+        log.info("getVoteForToday for user {}", authUser.id());
+        return ResponseEntity.of(repository.getWithRestaurantByDate(LocalDate.now(), authUser.id()));
+    }
+
     @PostMapping
-    public ResponseEntity<Vote> makeVoteWithLocation(@AuthenticationPrincipal AuthUser authUser, @RequestParam int restaurantId) {
+    public ResponseEntity<Vote> createWithLocation(@AuthenticationPrincipal AuthUser authUser, @RequestParam int restaurantId) {
         int userId = authUser.id();
         log.info("voting for user {}", userId);
-        Vote newVote = service.save(userId, restaurantId);
+        Vote newVote = service.make(userId, restaurantId);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL + "/{id}")
                 .buildAndExpand(newVote.getId()).toUri();
         return ResponseEntity.created(uriOfNewResource).body(newVote);
+    }
+
+    @PutMapping
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void update(@AuthenticationPrincipal AuthUser authUser, @RequestParam int restaurantID) {
+        int userId = authUser.id();
+        log.info("update a vote for user {}", userId);
+        service.update(userId, restaurantID);
     }
 }

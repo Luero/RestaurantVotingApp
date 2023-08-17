@@ -1,7 +1,9 @@
 package ru.javaops.restauranvotingapp.util;
 
 import lombok.experimental.UtilityClass;
+import ru.javaops.restauranvotingapp.model.Dish;
 import ru.javaops.restauranvotingapp.model.Restaurant;
+import ru.javaops.restauranvotingapp.to.DishTo;
 import ru.javaops.restauranvotingapp.to.RestaurantTo;
 
 @UtilityClass
@@ -14,5 +16,12 @@ public class ToUtil {
     public static Restaurant updateFromRestaurantTo (Restaurant restaurant, RestaurantTo restaurantTo) {
         restaurant.setName(restaurantTo.getName());
         return restaurant;
+    }
+
+    public static Dish updateFromDishTo (Dish dish, DishTo dishTo) {
+        dish.setName(dishTo.getName());
+        dish.setPrice(dishTo.getPrice());
+        dish.setMenuDate(dishTo.getMenuDate());
+        return dish;
     }
 }

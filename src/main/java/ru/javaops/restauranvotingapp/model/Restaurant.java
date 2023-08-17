@@ -34,7 +34,7 @@ public class Restaurant extends BaseEntity {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
     @OrderBy("menuDate DESC")
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private List<Dish> menu;
+    private List<Dish> dishes;
 
     public Restaurant(Integer id, String name) {
         super(id);

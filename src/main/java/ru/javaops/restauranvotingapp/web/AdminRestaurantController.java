@@ -11,7 +11,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import ru.javaops.restauranvotingapp.error.NotFoundException;
 import ru.javaops.restauranvotingapp.model.Restaurant;
 import ru.javaops.restauranvotingapp.repository.RestaurantRepository;
 import ru.javaops.restauranvotingapp.service.RestaurantService;
@@ -19,6 +18,7 @@ import ru.javaops.restauranvotingapp.to.RestaurantTo;
 import ru.javaops.restauranvotingapp.util.ToUtil;
 
 import java.net.URI;
+import java.time.LocalDate;
 import java.util.List;
 
 import static ru.javaops.restauranvotingapp.util.ValidationUtil.checkNew;
@@ -49,15 +49,18 @@ public class AdminRestaurantController {
         return repository.getExisted(id);
     }
 
-    @GetMapping("/{id}/with_dishes")
-    public Restaurant getWithDishes(@PathVariable int id) {
+    @GetMapping("/{id}/with-dishes")
+    public ResponseEntity<Restaurant> getWithDishes(@PathVariable int id) {
         log.info("getWithMenu {}", id);
-        return repository.getWithDishes(id).orElseThrow(()
-                -> new NotFoundException("Entity with id=" + id + " not found"));
+        return ResponseEntity.of(repository.getWithDishes(id));
     }
 
-
-    //TODO getWithMenuByDate
+    @GetMapping("{id}/with-menu-for-date")
+    public ResponseEntity<Restaurant> getWithDishesByDate(@PathVariable int id,
+                                                          @RequestParam LocalDate date) {
+        log.info("getWithDishesByDate {} for restaurant {}",date, id);
+        return ResponseEntity.of(repository.getWithDishesByDate(id, date));
+    }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)

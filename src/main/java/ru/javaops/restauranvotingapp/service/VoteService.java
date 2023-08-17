@@ -3,6 +3,7 @@ package ru.javaops.restauranvotingapp.service;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.javaops.restauranvotingapp.error.ConflictRequestException;
 import ru.javaops.restauranvotingapp.error.IllegalRequestDataException;
 import ru.javaops.restauranvotingapp.repository.RestaurantRepository;
 import ru.javaops.restauranvotingapp.repository.UserRepository;
@@ -26,21 +27,32 @@ public class VoteService {
     private VoteRepository repository;
 
     @Transactional
-    public Vote save(int userId, int restaurantId) {
-        Optional<Vote> todayVoteOptional = repository.getVoteByDate(LocalDate.now(), userId);
-        LocalTime currentTime = LocalTime.now();
+    public Vote make(int userId, int restaurantId) {
+        Optional<Vote> todayVoteOptional = repository.getByDate(LocalDate.now(), userId);
         if (todayVoteOptional.isEmpty()) {
             Vote vote = new Vote(null, userRepository.getExisted(userId), LocalDate.now(), LocalTime.now(),
                     restaurantRepository.getExisted(restaurantId));
             return repository.save(vote);
         } else {
+            throw new ConflictRequestException("You have already voted today, please, try the update function.");
+        }
+    }
+
+    @Transactional
+    public Vote update(int userId, int restaurantId) {
+        Optional<Vote> todayVoteOptional = repository.getByDate(LocalDate.now(), userId);
+        if (todayVoteOptional.isPresent()) {
+            LocalTime currentTime = LocalTime.now();
             if (currentTime.isBefore(VOTING_DEADLINE)) {
                 Vote todayVote = todayVoteOptional.get();
                 todayVote.setRestaurant(restaurantRepository.getExisted(restaurantId));
                 return repository.save(todayVote);
             } else {
-                throw new IllegalRequestDataException("You cannot update your vote for today");
+                throw new IllegalRequestDataException("You cannot update your vote for today after 11:00 am.");
             }
+        } else {
+            throw new ConflictRequestException("You have not voted today. Please, make a vote.");
         }
     }
 }
+

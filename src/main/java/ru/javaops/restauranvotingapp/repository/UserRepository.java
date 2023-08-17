@@ -13,9 +13,6 @@ import static ru.javaops.restauranvotingapp.config.SecurityConfig.PASSWORD_ENCOD
 @Transactional(readOnly = true)
 public interface UserRepository extends BaseRepository<User> {
 
-    @Query("SELECT u FROM User u LEFT JOIN FETCH u.votes v LEFT JOIN FETCH v.restaurant WHERE u.id=?1")
-    Optional<User> getWithVotes(int id);
-
     @Transactional
     @CachePut(value = "users", key = "#user.email")
     default User prepareAndSave(User user) {
