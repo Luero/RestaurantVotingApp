@@ -5,8 +5,8 @@ import org.springframework.http.HttpStatus;
 
 import static org.springframework.boot.web.error.ErrorAttributeOptions.Include.MESSAGE;
 
-public class ConflictRequestException extends AppException {
-    public ConflictRequestException(String msg) {
-        super(HttpStatus.CONFLICT, msg, ErrorAttributeOptions.of(MESSAGE));
+public class MethodNotAllowedException extends AppException {
+    public MethodNotAllowedException(String msg) {
+        super(HttpStatus.METHOD_NOT_ALLOWED, msg, ErrorAttributeOptions.of(MESSAGE));
     }
 }

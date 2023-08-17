@@ -3,8 +3,7 @@ package ru.javaops.restauranvotingapp.service;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.javaops.restauranvotingapp.error.ConflictRequestException;
-import ru.javaops.restauranvotingapp.error.IllegalRequestDataException;
+import ru.javaops.restauranvotingapp.error.MethodNotAllowedException;
 import ru.javaops.restauranvotingapp.repository.RestaurantRepository;
 import ru.javaops.restauranvotingapp.repository.UserRepository;
 import ru.javaops.restauranvotingapp.model.Vote;
@@ -34,7 +33,7 @@ public class VoteService {
                     restaurantRepository.getExisted(restaurantId));
             return repository.save(vote);
         } else {
-            throw new ConflictRequestException("You have already voted today, please, try the update function.");
+            throw new MethodNotAllowedException("You have already voted today, please, try the update function.");
         }
     }
 
@@ -48,10 +47,10 @@ public class VoteService {
                 todayVote.setRestaurant(restaurantRepository.getExisted(restaurantId));
                 return repository.save(todayVote);
             } else {
-                throw new IllegalRequestDataException("You cannot update your vote for today after 11:00 am.");
+                throw new MethodNotAllowedException("You cannot update your vote for today after 11:00 am.");
             }
         } else {
-            throw new ConflictRequestException("You have not voted today. Please, make a vote.");
+            throw new MethodNotAllowedException("You have not voted today. Please, make a vote.");
         }
     }
 }
