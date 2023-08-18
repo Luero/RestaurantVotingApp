@@ -6,9 +6,11 @@ import ru.javaops.restauranvotingapp.model.User;
 public class UserTestData {
 
     public static final MatcherFactory.Matcher<User> USER_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(User.class,
-            "votes", "password", "roles");
+            "votes", "password");
 
     public static final String ADMIN_MAIL = "admin@yandex.ru";
+    public static final String USER_MAIL = "user@yandex.ru";
+    public static final String VICTOR_MAIL = "victor@yandex.ru";
 
     public static final int USER_ID = 1;
     public static final int ADMIN_ID = 2;

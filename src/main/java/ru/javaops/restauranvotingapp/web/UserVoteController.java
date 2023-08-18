@@ -57,9 +57,9 @@ public class UserVoteController {
 
     @PutMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@AuthenticationPrincipal AuthUser authUser, @RequestParam int restaurantID) {
+    public void update(@AuthenticationPrincipal AuthUser authUser, @RequestParam int restaurantId) {
         int userId = authUser.id();
         log.info("update a vote for user {}", userId);
-        service.update(userId, restaurantID);
+        service.update(userId, restaurantId);
     }
 }

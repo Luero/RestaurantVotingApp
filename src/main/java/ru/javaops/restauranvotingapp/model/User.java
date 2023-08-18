@@ -55,21 +55,20 @@ public class User extends BaseEntity {
     private Set<Role> roles;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
-    @OrderBy("votingDateTime DESC")
+    @OrderBy("votingDate DESC")
     @OnDelete(action = OnDeleteAction.CASCADE)
     @Schema(hidden = true)
     private List<Vote> votes;
 
     public User(Integer id, String name, String email, String password, Role... roles) {
+        this(id, name, email, password, Arrays.asList(roles));
+    }
+
+    public User(Integer id, String name, String email, String password, Collection<Role> roles) {
         super(id);
         this.name = name;
         this.email = email;
         this.password = password;
-        Arrays.asList(roles);
-    }
-
-    public User(String name, Collection<Role> roles) {
-        this.name = name;
         setRoles(roles);
     }
 

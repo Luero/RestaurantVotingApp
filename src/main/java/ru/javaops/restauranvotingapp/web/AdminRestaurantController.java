@@ -51,7 +51,7 @@ public class AdminRestaurantController {
 
     @GetMapping("/{id}/with-dishes")
     public ResponseEntity<Restaurant> getWithDishes(@PathVariable int id) {
-        log.info("getWithMenu {}", id);
+        log.info("getWithDishes {}", id);
         return ResponseEntity.of(repository.getWithDishes(id));
     }
 

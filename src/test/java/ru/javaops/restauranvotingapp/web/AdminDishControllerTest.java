@@ -8,7 +8,6 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import ru.javaops.restauranvotingapp.model.Dish;
 import ru.javaops.restauranvotingapp.repository.DishRepository;
-import ru.javaops.restauranvotingapp.repository.RestaurantRepository;
 import ru.javaops.restauranvotingapp.service.MenuService;
 import ru.javaops.restauranvotingapp.util.JsonUtil;
 
@@ -20,9 +19,7 @@ import static ru.javaops.restauranvotingapp.web.UserTestData.ADMIN_MAIL;
 
 public class AdminDishControllerTest extends AbstractControllerTest {
 
-    static final String REST_URL = "/api/admin/restaurants";
-    @Autowired
-    private RestaurantRepository repository;
+    static final String REST_URL = "/api/admin/dishes";
 
     @Autowired
     private MenuService service;
@@ -32,19 +29,10 @@ public class AdminDishControllerTest extends AbstractControllerTest {
 
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
-    void getWithMenu() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL + "/" + BINGO_DISH_ID + "/menu"))
-                .andExpect(status().isOk())
-                .andDo(print())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(RESTAURANT_WITH_MENU_MATCHER.contentJson(bingoDish));
-    }
-
-    @Test
-    @WithUserDetails(value = ADMIN_MAIL)
-    void addToMenu() throws Exception {
+    void addToMenuWithLocation() throws Exception {
         Dish newDish = getNew();
-        ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL + "/" + BINGO_DISH_ID + "/menu")
+        ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL +
+                        "/for-restaurant" + FAST_FOOD_M_ID)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(newDish)));
 
@@ -53,5 +41,16 @@ public class AdminDishControllerTest extends AbstractControllerTest {
         newDish.setId(newId);
         DISH_MATCHER.assertMatch(created, newDish);
         DISH_MATCHER.assertMatch(dishRepository.getExisted(newId), newDish);
+    }
+
+    @Test
+    @WithUserDetails(value = ADMIN_MAIL)
+    void get() throws Exception {
+        perform(MockMvcRequestBuilders.get(REST_URL + "/" + DISH9_ID))
+                .andExpect(status().isOk())
+                .andDo(print())
+                // https://jira.spring.io/browse/SPR-14472
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(DISH_MATCHER.contentJson(DISH9));
     }
 }

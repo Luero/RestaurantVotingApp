@@ -5,10 +5,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.validator.constraints.Range;
 
 import java.time.LocalDate;
@@ -40,8 +37,17 @@ public class Dish extends BaseEntity {
     @NotNull
     private LocalDate menuDate = LocalDate.now();
 
-    public Dish(String name, long price) {
+    public Dish(String name, long price, LocalDate menuDate) {
         this.name = name;
         this.price = price;
+        this.menuDate = menuDate;
+    }
+
+    public Dish(Integer id, String name, long price, Restaurant restaurant, LocalDate menuDate) {
+        super(id);
+        this.name = name;
+        this.price = price;
+        this.restaurant = restaurant;
+        this.menuDate = menuDate;
     }
 }

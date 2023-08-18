@@ -15,6 +15,7 @@ import org.springframework.http.ProblemDetail;
 import ru.javaops.restauranvotingapp.util.JsonUtil;
 
 import java.sql.SQLException;
+import java.time.Clock;
 import java.util.Map;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.ANY;
@@ -45,5 +46,11 @@ public class AppConfig {
         // https://stackoverflow.com/questions/7421474/548473
         objectMapper.addMixIn(ProblemDetail.class, MixIn.class);
         JsonUtil.setMapper(objectMapper);
+    }
+
+    //https://stackoverflow.com/questions/49634941/how-to-inject-clock-getinstance-in-spring-boot
+    @Bean
+    public Clock clock() {
+        return Clock.systemDefaultZone();
     }
 }

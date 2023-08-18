@@ -4,13 +4,15 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.javaops.restauranvotingapp.error.MethodNotAllowedException;
+import ru.javaops.restauranvotingapp.model.Vote;
 import ru.javaops.restauranvotingapp.repository.RestaurantRepository;
 import ru.javaops.restauranvotingapp.repository.UserRepository;
-import ru.javaops.restauranvotingapp.model.Vote;
 import ru.javaops.restauranvotingapp.repository.VoteRepository;
 
+import java.time.Clock;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.Optional;
 
 @Service
@@ -24,6 +26,8 @@ public class VoteService {
     private RestaurantRepository restaurantRepository;
 
     private VoteRepository repository;
+
+    private Clock clock;
 
     @Transactional
     public Vote make(int userId, int restaurantId) {
@@ -41,7 +45,8 @@ public class VoteService {
     public Vote update(int userId, int restaurantId) {
         Optional<Vote> todayVoteOptional = repository.getByDate(LocalDate.now(), userId);
         if (todayVoteOptional.isPresent()) {
-            LocalTime currentTime = LocalTime.now();
+            //https://stackoverflow.com/questions/27340650/how-to-convert-an-instant-to-a-localtime
+            LocalTime currentTime = LocalTime.ofInstant(clock.instant(), ZoneId.systemDefault());
             if (currentTime.isBefore(VOTING_DEADLINE)) {
                 Vote todayVote = todayVoteOptional.get();
                 todayVote.setRestaurant(restaurantRepository.getExisted(restaurantId));
