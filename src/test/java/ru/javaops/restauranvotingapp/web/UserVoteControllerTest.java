@@ -63,7 +63,4 @@ public class UserVoteControllerTest extends AbstractControllerTest {
                     .andExpect(status().isMethodNotAllowed());
         }
     }
-
-    //not working: https://stackoverflow.com/questions/2001671/override-java-system-currenttimemillis-for-testing-time-sensitive-code,
-    //https://www.baeldung.com/java-override-system-time
 }

@@ -30,7 +30,7 @@ public class AdminRestaurantControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     public void delete() throws Exception {
-        perform(MockMvcRequestBuilders.delete(REST_URL+ "/" + FAST_FOOD_M_ID))
+        perform(MockMvcRequestBuilders.delete(REST_URL + "/" + FAST_FOOD_M_ID))
                 .andExpect(status().isNoContent());
         assertFalse(repository.findById(FAST_FOOD_M_ID).isPresent());
     }
@@ -39,7 +39,7 @@ public class AdminRestaurantControllerTest extends AbstractControllerTest {
     @WithUserDetails(value = ADMIN_MAIL)
     public void update() throws Exception {
         Restaurant updated = getUpdated();
-        perform(MockMvcRequestBuilders.put(REST_URL+ "/" + FAST_FOOD_M_ID)
+        perform(MockMvcRequestBuilders.put(REST_URL + "/" + FAST_FOOD_M_ID)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(updated)))
                 .andExpect(status().isNoContent());

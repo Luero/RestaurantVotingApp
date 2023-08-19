@@ -29,7 +29,6 @@ public class RestaurantAndDishTestData {
     public static final int BINGO_DISH_ID = 2;
 
     public static final Restaurant fastFoodM = new Restaurant(FAST_FOOD_M_ID, "Fast food M");
-    public static final Restaurant bingoDish = new Restaurant(BINGO_DISH_ID, "Bingo Dish");
 
     public static final int DISH9_ID = 9;
 
@@ -52,6 +51,7 @@ public class RestaurantAndDishTestData {
     public static Restaurant getUpdated() {
         return new Restaurant(FAST_FOOD_M_ID, "newName");
     }
+
     public static Dish getNew() {
         return new Dish("noodles", 1200, LocalDate.now());
     }

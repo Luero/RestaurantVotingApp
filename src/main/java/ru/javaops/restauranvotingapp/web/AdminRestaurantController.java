@@ -58,7 +58,7 @@ public class AdminRestaurantController {
     @GetMapping("{id}/with-menu-for-date")
     public ResponseEntity<Restaurant> getWithDishesByDate(@PathVariable int id,
                                                           @RequestParam LocalDate date) {
-        log.info("getWithDishesByDate {} for restaurant {}",date, id);
+        log.info("getWithDishesByDate {} for restaurant {}", date, id);
         return ResponseEntity.of(repository.getWithDishesByDate(id, date));
     }
 

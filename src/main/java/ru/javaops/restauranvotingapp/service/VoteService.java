@@ -37,7 +37,7 @@ public class VoteService {
                     restaurantRepository.getExisted(restaurantId));
             return repository.save(vote);
         } else {
-            throw new MethodNotAllowedException("You have already voted today, please, try the update function.");
+            throw new MethodNotAllowedException("You have already voted today, please, try to update your vote.");
         }
     }
 
@@ -45,7 +45,6 @@ public class VoteService {
     public Vote update(int userId, int restaurantId) {
         Optional<Vote> todayVoteOptional = repository.getByDate(LocalDate.now(), userId);
         if (todayVoteOptional.isPresent()) {
-            //https://stackoverflow.com/questions/27340650/how-to-convert-an-instant-to-a-localtime
             LocalTime currentTime = LocalTime.ofInstant(clock.instant(), ZoneId.systemDefault());
             if (currentTime.isBefore(VOTING_DEADLINE)) {
                 Vote todayVote = todayVoteOptional.get();

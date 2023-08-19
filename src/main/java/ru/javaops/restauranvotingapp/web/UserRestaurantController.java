@@ -26,7 +26,7 @@ public class UserRestaurantController {
 
     @GetMapping
     public List<Restaurant> getAllWithMenuForToday() {
-        log.info("getAllWithMenu");
+        log.info("getAllWithMenuForToday");
         return repository.getAllWithMenuByDate(LocalDate.now());
     }
 }
