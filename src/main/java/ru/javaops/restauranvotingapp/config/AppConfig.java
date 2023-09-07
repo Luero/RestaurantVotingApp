@@ -4,7 +4,9 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.hibernate5.jakarta.Hibernate5JakartaModule;
+import io.swagger.v3.oas.models.media.Schema;
 import lombok.extern.slf4j.Slf4j;
+import org.springdoc.core.utils.SpringDocUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
@@ -16,6 +18,8 @@ import ru.javaops.restauranvotingapp.util.JsonUtil;
 
 import java.sql.SQLException;
 import java.time.Clock;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.ANY;
@@ -25,6 +29,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 @Slf4j
 @EnableCaching
 public class AppConfig {
+
+    static {
+        var schema = new Schema<LocalTime>();
+        schema.example(LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")));
+        SpringDocUtils.getConfig().replaceWithSchema(LocalTime.class, schema);
+    }
 
     @Bean(initMethod = "start", destroyMethod = "stop")
     @Profile("!test")

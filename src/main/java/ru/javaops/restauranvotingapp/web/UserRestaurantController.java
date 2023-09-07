@@ -19,7 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserRestaurantController {
 
-    static final String REST_URL = "/api/user/restaurants";
+    static final String REST_URL = "/api/user/restaurants/with-menu-for-today";
 
     @Autowired
     private final RestaurantRepository repository;

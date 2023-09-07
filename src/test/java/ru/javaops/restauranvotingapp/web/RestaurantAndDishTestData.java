@@ -28,7 +28,7 @@ public class RestaurantAndDishTestData {
     public static final int FAST_FOOD_M_ID = 1;
     public static final int BINGO_DISH_ID = 2;
 
-    public static final Restaurant fastFoodM = new Restaurant(FAST_FOOD_M_ID, "Fast food M");
+    public static final Restaurant fastFoodM = new Restaurant(FAST_FOOD_M_ID, "London, Madia Vale, 3", "Fast food M");
 
     public static final int DISH9_ID = 9;
 
@@ -49,7 +49,7 @@ public class RestaurantAndDishTestData {
     }
 
     public static Restaurant getUpdated() {
-        return new Restaurant(FAST_FOOD_M_ID, "newName");
+        return new Restaurant(FAST_FOOD_M_ID, "newAddress", "newName");
     }
 
     public static Dish getNew() {

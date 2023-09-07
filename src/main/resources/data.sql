@@ -9,10 +9,11 @@ VALUES ('USER', 1),
        ('USER', 2),
        ('USER', 3);
 
-INSERT INTO RESTAURANT (name, registered)
-VALUES ('Fast food M', '2023-06-01'),
-       ('Bingo Dish', '2023-04-30'),
-       ('Foody', now());
+INSERT INTO RESTAURANT (name, address, registered)
+VALUES ('Fast food M', 'London, Madia Vale, 3', '2023-06-01'),
+       ('Bingo Dish', 'London, Lodge road, 10', '2023-04-30'),
+       ('Foody', 'London, Albert road, 22', '2023-05-20'),
+       ('Valenok', 'London, Pembridge Square, 2', now());
 
 INSERT INTO DISH (name, price, RESTAURANT_ID, menu_date)
 VALUES ('Tomato soup', 2000, 2, '2023-06-20'),
@@ -31,7 +32,10 @@ VALUES ('Tomato soup', 2000, 2, '2023-06-20'),
        ('Russian salad', 1900, 3, '2023-06-20'),
        ('Pickled mushrooms', 120, 3, '2023-06-20'),
        ('Fish soup', 2000, 3, '2023-06-21'),
-       ('Beef with potatoes', 2600, 3, '2023-06-21');
+       ('Beef with potatoes', 2600, 3, '2023-06-21'),
+       ('Pelmeny', 3500, 4, now()),
+       ('Solyanka', 2500, 4, now()),
+       ('Tea with lemon', 1000, 4, now());
 
 INSERT INTO VOTE (USER_ID, voting_date, voting_time, RESTAURANT_ID)
 VALUES (1, '2023-06-20', '10:00', 2),

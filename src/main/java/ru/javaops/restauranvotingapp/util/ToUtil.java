@@ -10,11 +10,12 @@ import ru.javaops.restauranvotingapp.to.RestaurantTo;
 public class ToUtil {
 
     public static Restaurant createFromRestaurantTo(RestaurantTo restaurantTo) {
-        return new Restaurant(null, restaurantTo.getName());
+        return new Restaurant(null, restaurantTo.getAddress(), restaurantTo.getName());
     }
 
     public static Restaurant updateFromRestaurantTo(Restaurant restaurant, RestaurantTo restaurantTo) {
         restaurant.setName(restaurantTo.getName());
+        restaurant.setAddress(restaurantTo.getAddress());
         return restaurant;
     }
 

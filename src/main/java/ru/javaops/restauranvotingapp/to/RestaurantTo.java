@@ -20,4 +20,7 @@ public class RestaurantTo implements HasId {
     @NotBlank
     @Size(min = 2, max = 128)
     private String name;
+
+    @NotBlank
+    private String address;
 }
